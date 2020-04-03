@@ -34,3 +34,5 @@ build/
 !.vscode/extensions.json
 dist/
 package-lock.json
+.env
+test.env
