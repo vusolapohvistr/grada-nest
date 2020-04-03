@@ -32,5 +32,5 @@ build/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
+dist/
 package-lock.json

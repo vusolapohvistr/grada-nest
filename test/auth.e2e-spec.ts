@@ -1,0 +1,61 @@
+import { Test, TestingModule } from '@nestjs/testing';
+import { HttpStatus, INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
+import { AppModule } from '../src/app.module';
+
+let app: INestApplication;
+
+let agent;
+
+describe('Sign up test', () => {
+    it('Should return user with profile_id', async () => {
+        const newUserStub = {
+            username: 'username',
+            email: 'email@gmail.com',
+            password: 'password123qwe',
+            group: 'teacher',
+        };
+        const res = await agent
+           .post('/signup')
+           .send(newUserStub);
+
+        expect(res.status).toBe(HttpStatus.CREATED);
+        expect(res.body).toHaveProperty('profile_id');
+    });
+});
+
+describe('Sign in test', () => {
+    it('Should login', async () => {
+        const credentialInfo = {
+            username: 'username',
+            password: 'password123qwe'
+        };
+        const res = await agent
+            .post('/login')
+            .send(credentialInfo);
+        expect(res.status).toBe(HttpStatus.OK);
+        expect(res.body).toHaveProperty('username');
+    });
+});
+
+describe('Profile test', () => {
+    it ('Should get user profile', async () => {
+        const res = await agent.get('/api/v1/profile?me=true');
+        expect(res.status).toBe(HttpStatus.OK);
+        expect(res.body[0]).toHaveProperty('user_id');
+    });
+});
+
+beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+        imports: [AppModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    await app.init();
+    agent = request.agent(app.getHttpServer());
+});
+
+afterAll(async () => {
+   await app.close();
+});
