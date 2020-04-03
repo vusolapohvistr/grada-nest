@@ -22,8 +22,7 @@
       "test:watch": "jest --watch",
       "test:cov": "jest --coverage",
       "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-      "test:e2e": "set NODE_ENV=test && jest --config ./test/jest-e2e.json --env",
-      "prestart": "set NODE_ENV=''",
+      "test:e2e": "jest --config ./test/jest-e2e.json --env",
       "pretest:e2e": "npm run db:migration:up"
    },
    "dependencies": {
@@ -35,6 +34,8 @@
       "@nestjsx/crud": "^4.4.2",
       "@nestjsx/crud-typeorm": "^4.4.2",
       "bcrypt": "^4.0.1",
+      "class-transformer": "^0.2.3",
+      "class-validator": "^0.11.1",
       "dotenv": "^8.2.0",
       "mysql": "^2.14.1",
       "passport": "^0.4.1",

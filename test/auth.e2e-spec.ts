@@ -18,7 +18,7 @@ let agent;
 let username: string;
 
 describe('Sign up test', () => {
-    it('Should return user with profile_id', async () => {
+    it('Should return user with id', async () => {
         const newUserStub = {
             username,
             email: username + '@gmail.com',
@@ -50,9 +50,9 @@ describe('Sign in test', () => {
 
 describe('Profile test', () => {
     it ('Should get user profile', async () => {
-        const res = await agent.get('/profile?me=true');
+        const res = await agent.get('/profile');
         expect(res.status).toBe(HttpStatus.OK);
-        expect(res.body[0]).toHaveProperty('user_id');
+        expect(res.body[0]).toHaveProperty('id');
     });
 });
 
