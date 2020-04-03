@@ -15,7 +15,7 @@ export class User {
     @Column({length: 50, unique: true, nullable: false})
     email: string;
 
-    @Column({length: 50, unique: true, nullable: false})
+    @Column({unique: true, nullable: false})
     password: string;
 
     @OneToOne(type => Profile, profile => profile.user)

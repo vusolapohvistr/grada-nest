@@ -1,12 +1,14 @@
-const database = process.env.NODE_ENV === 'test' ? 'gradanest' : 'gradanest';
+require('dotenv').config();
+
+
 
 module.exports = {
   'type': 'postgres',
-  'host': 'localhost',
+  'host': process.env.DATABASE_HOST,
   'port': 5432,
-  'username': 'grada',
-  'password': '123qwe',
-  'database': database,
+  'username': process.env.DATABASE_USERNAME,
+  'password': process.env.DATABASE_PASSWORD,
+  'database': process.env.DATABASE_NAME,
   'synchronize': false,
   'logging': false,
   'entities': [
