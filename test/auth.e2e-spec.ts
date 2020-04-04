@@ -1,8 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from '../src/app.module';
 import * as crypto from 'crypto';
+import { AppModule } from '../src/app.module';
+import * as cookieParser from 'cookie-parser';
+import * as session from 'express-session';
+import * as passport from 'passport';
+import { wrapGlobalMiddleware } from '../src/main';
 
 function randomBytes (length: number) {
     return new Promise<string>(resolve => {
@@ -50,9 +54,9 @@ describe('Sign in test', () => {
 
 describe('Profile test', () => {
     it ('Should get user profile', async () => {
-        const res = await agent.get('/profile');
+        const res = await agent.get('/me');
         expect(res.status).toBe(HttpStatus.OK);
-        expect(res.body[0]).toHaveProperty('id');
+        expect(res.body).toHaveProperty('id');
     });
 });
 
@@ -62,6 +66,8 @@ beforeAll(async () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+
+    wrapGlobalMiddleware(app);
     await app.init();
     agent = request.agent(app.getHttpServer());
     username = (await randomBytes(40)).substr(0, 40);

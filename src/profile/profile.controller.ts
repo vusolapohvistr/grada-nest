@@ -11,6 +11,6 @@ import { ProfileService } from './profile.service';
 @Controller('profile')
 export class ProfileController {
   constructor(
-    public profileService: ProfileService
+    public service: ProfileService
   ) {}
 }

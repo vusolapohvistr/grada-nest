@@ -10,17 +10,20 @@ export class SignUpService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Profile)
     private profileRepository: Repository<Profile>) {
   }
 
-  async signUp(user: User): Promise<{id: number} | null> {
+  async signUp(user: User): Promise<User | null> {
     const password = await bcrypt.hash(user.password, 10);
     try {
-      const result = await this.userRepository.insert({ ...user, password });
-      const u = await this.userRepository.findOne(result.identifiers[0]);
-      const profile = await this.profileRepository.insert({user: u});
-      console.log(u, profile);
-      return result.identifiers[0] as {id: number};
+      const newProfile = await this.profileRepository.create();
+      await this.profileRepository.save(newProfile);
+      const newUser = await this.userRepository.create(user);
+      newUser.password = password;
+      newUser.profile = newProfile;
+      await this.userRepository.save(newUser);
+      return newUser;
     } catch (e) {
       console.error(e);
       return null;
